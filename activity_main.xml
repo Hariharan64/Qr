@@ -2,56 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
-
-
-
-
-
-
     <Button
-        android:id="@+id/present"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="Present"
-
-        />
-
-    <Button
-        android:id="@+id/scan_button"
+        android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scan QR Code"
+        android:text="Scan Barcode/QR Code"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
+        android:layout_centerVertical="true" />
 
     <TextView
-        android:id="@+id/result_text"
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR Code Result Will Appear Here"
-        android:textSize="18sp"
-        android:layout_below="@id/scan_button"
+        android:layout_below="@id/btn_scan"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true" />
+        android:textSize="18sp"
+        android:textColor="#000" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="124dp"
-        android:layout_height="82dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="273dp"
-        android:layout_marginBottom="696dp"
-        android:contentDescription="img"
-        android:scaleType="fitCenter"
-        android:src="@drawable/baseline_person_pin_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewUserInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="User Info will appear here"
+            android:padding="16dp" />
+    </LinearLayout>
 
 
 </RelativeLayout>

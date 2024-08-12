@@ -1,54 +1,64 @@
 package com.example.qrstaff;
 
-import android.os.Bundle;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CalendarView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AttendanceActivity extends AppCompatActivity {
 
 
-    private TextView punchInTimeTextView, punchOutTimeTextView;
-    private DatabaseReference attendanceRef;
+    private CalendarView calendarView;
+    private Button buttonRecordDate;
+    private long selectedDateMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        punchInTimeTextView = findViewById(R.id.punchInTimeTextView);
-        punchOutTimeTextView = findViewById(R.id.punchOutTimeTextView);
 
-        attendanceRef = FirebaseDatabase.getInstance().getReference("attendance");
-        String userId = getUserId(); // Replace with actual user ID retrieval logic
+        calendarView = findViewById(R.id.calendarView);
+        buttonRecordDate = findViewById(R.id.buttonRecordDate);
 
-        // Retrieve punch-in and punch-out times from Firebase
-        attendanceRef.child(userId).addValueEventListener(new ValueEventListener() {
+        // Set up the CalendarView
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String punchInTime = snapshot.child("punchInTime").getValue(String.class);
-                String punchOutTime = snapshot.child("punchOutTime").getValue(String.class);
-
-                punchInTimeTextView.setText(punchInTime != null ? "Punch In Time: " + punchInTime : "Punch In Time: Not recorded");
-                punchOutTimeTextView.setText(punchOutTime != null ? "Punch Out Time: " + punchOutTime : "Punch Out Time: Not recorded");
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // Optionally handle date changes
             }
+        });
 
+        // Button click listener
+        buttonRecordDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle possible errors
+            public void onClick(View v) {
+                recordCurrentDate();
             }
         });
     }
 
-    private String getUserId() {
-        // Replace this with actual user ID retrieval logic
-        return "user123"; // Example user ID
+    private void recordCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        selectedDateMillis = calendar.getTimeInMillis();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = sdf.format(calendar.getTime());
+
+        // Update CalendarView to show the current date with a color change (note: CalendarView doesn’t support custom colors directly)
+        // For custom color changes, you might need a custom view or third-party library.
+
+        // Display the selected date as a log or Toast (you can modify this part based on your requirement)
+        System.out.println("Recorded Date: " + date);
     }
 }
+
+
+

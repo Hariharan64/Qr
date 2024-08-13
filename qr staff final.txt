@@ -1,0 +1,694 @@
+attendance qr
+
+
+Step 1: Create a New Layout XML File
+In Android Studio, go to res/layout.
+Right-click on layout, choose New > Layout Resource File, and name it activity_attendance.xml.
+Click OK to create the file.
+Step 2: Define the Main Layout
+In activity_attendance.xml, define the structure. This layout will include:
+
+Horizontal ScrollView for the year and month selector.
+RecyclerView to display the list of attendance records.
+BottomNavigationView for the bottom navigation bar.
+xml
+Copy code
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Year and Month Selector -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <!-- Year Buttons -->
+            <Button
+                android:id="@+id/year2024"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024"
+                android:textColor="@android:color/white"
+                android:background="@drawable/selector_button"
+                android:layout_margin="4dp"/>
+
+            <!-- Repeat for other years -->
+            <!-- ... -->
+
+            <!-- Month Buttons -->
+            <Button
+                android:id="@+id/monthAug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aug"
+                android:textColor="@android:color/white"
+                android:background="@drawable/selector_button"
+                android:layout_margin="4dp"/>
+
+            <!-- Repeat for other months -->
+            <!-- ... -->
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- RecyclerView for Attendance Records -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/attendanceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@id/year_month_selector"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
+
+    <!-- Bottom Navigation Bar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_navigation_menu" />
+
+</RelativeLayout>
+Step 3: Create a Custom Layout for Each Attendance Record
+Right-click on res/layout, select New > Layout Resource File, and name it attendance_item.xml.
+Define the layout for each attendance item in the RecyclerView.
+xml
+Copy code
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/attendance_item_background"
+    android:layout_marginBottom="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Date and Day -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="THU"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Punch In/Out and Overall Time -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/date_day_layout"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/punch_in_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Punch In: 09:26 am"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/punch_out_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Punch Out: 05:44 pm"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/overall_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Overall: 8:18 hr"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Attendance Status -->
+        <TextView
+            android:id="@+id/attendance_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="P"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:background="@drawable/status_background"
+            android:padding="4dp"/>
+    </RelativeLayout>
+
+    <!-- Punch In Remarks -->
+    <TextView
+        android:id="@+id/punch_in_remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Punch In Remarks: in"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp" />
+
+</LinearLayout>
+Step 4: Create a Custom Adapter for the RecyclerView
+Right-click on your package name, select New > Java Class, and name it AttendanceAdapter.java.
+Create a ViewHolder and bind the data to the views.
+java
+Copy code
+public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
+
+    private List<AttendanceRecord> attendanceList;
+    private Context context;
+
+    public AttendanceAdapter(List<AttendanceRecord> attendanceList, Context context) {
+        this.attendanceList = attendanceList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public AttendanceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.attendance_item, parent, false);
+        return new AttendanceViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull AttendanceViewHolder holder, int position) {
+        AttendanceRecord record = attendanceList.get(position);
+        
+        holder.date.setText(record.getDate());
+        holder.day.setText(record.getDay());
+        holder.punchInTime.setText("Punch In: " + record.getPunchInTime());
+        holder.punchOutTime.setText("Punch Out: " + record.getPunchOutTime());
+        holder.overallTime.setText("Overall: " + record.getOverallTime());
+        holder.attendanceStatus.setText(record.getAttendanceStatus());
+        holder.punchInRemarks.setText("Punch In Remarks: " + record.getPunchInRemarks());
+
+        // Customize the attendance status color
+        if (record.getAttendanceStatus().equals("P")) {
+            holder.attendanceStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+        } else if (record.getAttendanceStatus().equals("W")) {
+            holder.attendanceStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.purple));
+        }
+        // Additional conditions for different statuses...
+    }
+
+    @Override
+    public int getItemCount() {
+        return attendanceList.size();
+    }
+
+    public static class AttendanceViewHolder extends RecyclerView.ViewHolder {
+        TextView date, day, punchInTime, punchOutTime, overallTime, attendanceStatus, punchInRemarks;
+
+        public AttendanceViewHolder(@NonNull View itemView) {
+            super(itemView);
+            date = itemView.findViewById(R.id.date);
+            day = itemView.findViewById(R.id.day);
+            punchInTime = itemView.findViewById(R.id.punch_in_time);
+            punchOutTime = itemView.findViewById(R.id.punch_out_time);
+            overallTime = itemView.findViewById(R.id.overall_time);
+            attendanceStatus = itemView.findViewById(R.id.attendance_status);
+            punchInRemarks = itemView.findViewById(R.id.punch_in_remarks);
+        }
+    }
+}
+Step 5: Define the Attendance Record Model
+Create a Java Class named AttendanceRecord.java.
+java
+Copy code
+public class AttendanceRecord {
+    private String date;
+    private String day;
+    private String punchInTime;
+    private String punchOutTime;
+    private String overallTime;
+    private String attendanceStatus;
+    private String punchInRemarks;
+
+    // Constructors, Getters, and Setters
+}
+Step 6: Set Up the Activity to Use the RecyclerView
+In your MainActivity.java or the corresponding Activity file:
+java
+Copy code
+public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView attendanceRecyclerView;
+    private AttendanceAdapter attendanceAdapter;
+    private List<AttendanceRecord> attendanceList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attendance);
+
+        attendanceRecyclerView = findViewById(R.id.attendanceRecyclerView);
+        attendanceRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        
+        // Initialize your list with sample data
+        attendanceList = new ArrayList<>();
+        // Add records to the list (replace with actual data)
+        attendanceList.add(new AttendanceRecord("1", "THU", "09:26 am", "05:44 pm", "8:18 hr", "P", "in"));
+        attendanceList.add(new AttendanceRecord("2", "FRI", "09:30 am", "05:39 pm", "8:9 hr", "P", "in"));
+        // Add more records...
+
+        attendanceAdapter = new AttendanceAdapter(attendanceList, this);
+        attendanceRecyclerView.setAdapter(attendanceAdapter);
+    }
+}
+Step 7: Handle Bottom Navigation
+In your res/menu/, create a bottom_navigation_menu.xml file to define the items in the bottom navigation.
+xml
+Copy code
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/navigation_attendance"
+        android:icon="@drawable/ic_attendance"
+        android:title="Attendance" />
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>
+Set up navigation in MainActivity.java:
+java
+Copy code
+BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                // Handle home click
+                return true;
+            case R.id.navigation_attendance:
+                // Handle attendance click
+                return true;
+            case R.id.navigation_notifications:
+                // Handle notifications click
+                return true;
+            case R.id.navigation_profile:
+                // Handle profile click
+                return true;
+        }
+        return false;
+    }
+});
+
+
+
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+Homepage Qr
+
+
+
+Step 1: Set Up Firebase
+Add Firebase to Your Android Project:
+
+Go to the Firebase console and create a new project.
+Follow the steps to add Firebase to your Android app. Download the google-services.json file and place it in your app's app directory.
+Add Firebase dependencies to your build.gradle files.
+groovy
+Copy code
+// Project-level build.gradle
+dependencies {
+    classpath 'com.google.gms:google-services:4.3.10'
+}
+
+// App-level build.gradle
+dependencies {
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-database:20.0.3'
+    implementation 'com.google.firebase:firebase-firestore:24.0.1'
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
+}
+
+apply plugin: 'com.google.gms.google-services'
+Step 2: Create the XML Layout for the UI
+Create a new XML layout file activity_main.xml in your res/layout/ folder.
+
+xml
+Copy code
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Profile Section -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_profile" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_marginStart="16dp"
+            android:text="Hariharan"
+            android:textSize="18sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/user_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/user_name"
+            android:text="Intern | QU000012"
+            android:textSize="14sp"
+            android:textColor="@color/gray" />
+    </RelativeLayout>
+
+    <!-- Attendance Summary -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Absent"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Present"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Leaves"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Punch In Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark your present: Punch In"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/scan_qr_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan QR"
+            android:backgroundTint="@color/orange"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- Other Options Section -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="3"
+        android:columnCount="2"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Support"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Notice"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Leaves"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Salary"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Holidays"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="2"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Reimbursement"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:padding="16dp"
+            android:layout_row="2"
+            android:layout_column="1" />
+    </GridLayout>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_navigation_menu" />
+</LinearLayout>
+Step 3: Create the Bottom Navigation Menu
+Create a new XML file bottom_navigation_menu.xml in the res/menu/ directory:
+
+xml
+Copy code
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/navigation_attendance"
+        android:icon="@drawable/ic_attendance"
+        android:title="Attendance" />
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>
+Step 4: Implement the Java Code
+Create a Main Activity:
+
+java
+Copy code
+public class MainActivity extends AppCompatActivity {
+
+    private TextView userName, userRole, absentCount, presentCount, leavesCount;
+    private ImageView profileImage;
+    private Button scanQrButton;
+    private BottomNavigationView bottomNavigationView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize UI components
+        userName = findViewById(R.id.user_name);
+        userRole = findViewById(R.id.user_role);
+        absentCount = findViewById(R.id.absent_count);
+        presentCount = findViewById(R.id.present_count);
+        leavesCount = findViewById(R.id.leaves_count);
+        profileImage = findViewById(R.id.profile_image);
+        scanQrButton = findViewById(R.id.scan_qr_button);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Set bottom navigation listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        // Load Home Fragment
+                        return true;
+                    case R.id.navigation_attendance:
+                        // Load Attendance Fragment
+                        return true;
+                    case R.id.navigation_notifications:
+                        // Load Notifications Fragment
+                        return true;
+                    case R.id.navigation_profile:
+                        // Load Profile Fragment
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        // Fetch user data from Firebase
+        fetchUserData();
+    }
+
+    private void fetchUserData() {
+        // Assume that FirebaseAuth is initialized and user is logged in
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            // Fetch user details from Firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString("name");
+                        String role = documentSnapshot.getString("role");
+                        long absent = documentSnapshot.getLong("absent");
+                        long present = documentSnapshot.getLong("present");
+                        long leaves = documentSnapshot.getLong("leaves");
+
+                        userName.setText(name);
+                        userRole.setText(role);
+                        absentCount.setText(String.valueOf(absent));
+                        presentCount.setText(String.valueOf(present));
+                        leavesCount.setText(String.valueOf(leaves));
+                    }
+                }
+            });
+        }
+    }
+}

@@ -1,0 +1,199 @@
+Self attendence
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Navigation Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/prevMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PREV" />
+
+        <TextView
+            android:id="@+id/monthYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="SEP 2022"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/nextMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NEXT" />
+    </LinearLayout>
+
+    <!-- Day Labels -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="SUN"
+            android:textStyle="bold" />
+
+        <!-- Repeat for other days -->
+        <!-- ... -->
+    </LinearLayout>
+
+    <!-- Calendar Grid -->
+    <GridView
+        android:id="@+id/calendarGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="7"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:background="#DDDDDD"/>
+
+    <!-- Attendance Summary -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/attendanceSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attendance for this month"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/attendanceDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Present: 7, Absent: 2, ..." />
+
+        <TextView
+            android:id="@+id/attendancePercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Percentage: 72.73%" />
+    </LinearLayout>
+</LinearLayout>
+____________________________________________________________
+
+
+
+public class CalendarAdapter extends BaseAdapter {
+    private Context context;
+    private List<Date> dates; // List of dates to display
+    private LayoutInflater inflater;
+
+    public CalendarAdapter(Context context, List<Date> dates) {
+        this.context = context;
+        this.dates = dates;
+        inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public int getCount() {
+        return dates.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dates.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.calendar_day, parent, false);
+        }
+
+        Date date = dates.get(position);
+        TextView dayView = convertView.findViewById(R.id.day);
+        dayView.setText(String.valueOf(date.getDate()));
+
+        // Customize the background color based on the day type
+        if (/* Check if the date is Present */) {
+            dayView.setBackgroundColor(Color.GREEN);
+        } else if (/* Check if the date is Absent */) {
+            dayView.setBackgroundColor(Color.RED);
+        } else if (/* Check if the date is a Holiday */) {
+            dayView.setBackgroundColor(Color.YELLOW);
+        }
+
+        return convertView;
+    }
+}
+___________________________________________________________
+
+
+
+Step 4: Create the Layout for Each Day in the Calendar Grid
+Right-click on res/layout, select New > Layout Resource File, and name it calendar_day.xml.
+
+Define the layout for each day in the grid:
+
+xml
+Copy code
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/day"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="8dp"
+    android:textColor="#000000"
+    android:background="@drawable/calendar_day_background" />
+
+
+
+
+________________________________________________________
+
+
+public class MainActivity extends AppCompatActivity {
+    private GridView calendarGridView;
+    private CalendarAdapter calendarAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calendar);
+
+        calendarGridView = findViewById(R.id.calendarGrid);
+
+        List<Date> dates = new ArrayList<>(); // Populate this list with the dates of the month
+        calendarAdapter = new CalendarAdapter(this, dates);
+        calendarGridView.setAdapter(calendarAdapter);
+    }
+}
+__________________________________________________________
+
+
+
+
+
+

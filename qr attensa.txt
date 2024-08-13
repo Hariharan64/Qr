@@ -1,0 +1,138 @@
+package com.example.attendance;
+
+public class AttendanceRecord {
+    private String date;
+    private String punchIn;
+    private String punchOut;
+    private String overall;
+    private String remarks;
+
+    public AttendanceRecord(String date, String punchIn, String punchOut, String overall, String remarks) {
+        this.date = date;
+        this.punchIn = punchIn;
+        this.punchOut = punchOut;
+        this.overall = overall;
+        this.remarks = remarks;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getPunchIn() {
+        return punchIn;
+    }
+
+    public String getPunchOut() {
+        return punchOut;
+    }
+
+    public String getOverall() {
+        return overall;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+}
+_________________________________________________________________________
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tvJobTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Job at XYZ"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <!-- Calendar GridView -->
+    <GridView
+        android:id="@+id/calendarGridView"
+        android:layout_width="374dp"
+        android:layout_height="273dp"
+        android:layout_below="@+id/tvJobTitle"
+        android:layout_marginTop="16dp"
+        android:horizontalSpacing="2dp"
+        android:numColumns="7"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp" />
+
+    <!-- Attendance Summary -->
+    <TextView
+        android:id="@+id/tvSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendance for this month"
+        android:textSize="16sp"
+        android:layout_below="@id/calendarGridView"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tvSummary"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tvPresentSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Present: 7"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAbsentSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Absent: 2"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/tvPercentageSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Percentage: 75%"
+            android:textColor="@android:color/holo_blue_dark" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSaveAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Attendance"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvSummary"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="600dp"
+
+        />
+
+</RelativeLayout>
+
+
+
+  <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn"
+        android:layout_marginTop="80dp"
+        />

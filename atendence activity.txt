@@ -1,0 +1,313 @@
+1. Create item_punch.xml for List Items
+xml
+Copy code
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/border_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1 THU"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPunchStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/status_background"
+            android:text="P"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/tvPunchIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Punch In: 09:26 am"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvPunchOut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Punch Out: 05:44 pm"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvOverall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overall: 8:18 hr"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvRemarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Punch In Remarks: in"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        android:paddingTop="4dp" />
+
+</LinearLayout>
+border_background.xml for item border:
+
+xml
+Copy code
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white"/>
+    <stroke android:width="1dp" android:color="@android:color/darker_gray"/>
+    <corners android:radius="4dp"/>
+</shape>
+status_background.xml for punch status:
+
+xml
+Copy code
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#4CAF50"/> <!-- Green background for "P" -->
+    <corners android:radius="4dp"/>
+</shape>
+2. Create activity_attendance.xml for the Activity
+xml
+Copy code
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn2024"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2024" />
+
+                    <Button
+                        android:id="@+id/btn2023"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2023" />
+
+                    <!-- Add other year buttons similarly -->
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <ListView
+                android:id="@+id/lvPunchHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/btnAttendance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Attendance" />
+
+        <!-- Add other navigation buttons similarly -->
+    </LinearLayout>
+</RelativeLayout>
+Step 3: Create the Java Code for the Activity
+Create an activity (AttendanceActivity.java) to populate the list with Firebase data.
+
+AttendanceActivity.java
+java
+Copy code
+package com.example.qrstaff;
+
+import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AttendanceActivity extends AppCompatActivity {
+
+    private ListView lvPunchHistory;
+    private List<PunchRecord> punchRecords;
+    private PunchAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attendance);
+
+        lvPunchHistory = findViewById(R.id.lvPunchHistory);
+        punchRecords = new ArrayList<>();
+        adapter = new PunchAdapter(this, R.layout.item_punch, punchRecords);
+        lvPunchHistory.setAdapter(adapter);
+
+        fetchDataFromFirebase();
+    }
+
+    private void fetchDataFromFirebase() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("PunchRecords");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                punchRecords.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    PunchRecord punchRecord = dataSnapshot.getValue(PunchRecord.class);
+                    punchRecords.add(punchRecord);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AttendanceActivity.this, "Failed to load data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+Create PunchRecord.java (Model Class)
+java
+Copy code
+package com.example.qrstaff;
+
+public class PunchRecord {
+    private String day;
+    private String punchIn;
+    private String punchOut;
+    private String overall;
+    private String punchStatus;
+    private String remarks;
+
+    // Default constructor required for calls to DataSnapshot.getValue(PunchRecord.class)
+    public PunchRecord() {}
+
+    // Getters and setters
+}
+Create PunchAdapter.java (Custom Adapter)
+java
+Copy code
+package com.example.qrstaff;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import java.util.List;
+
+public class PunchAdapter extends ArrayAdapter<PunchRecord> {
+    private int resourceLayout;
+    private Context mContext;
+
+    public PunchAdapter(Context context, int resource, List<PunchRecord> items) {
+        super(context, resource, items);
+        this.resourceLayout = resource;
+        this.mContext = context;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(resourceLayout, parent, false);
+        }
+
+        PunchRecord punchRecord = getItem(position);
+
+        TextView tvDay = convertView.findViewById(R.id.tvDay);
+        TextView tvPunchIn = convertView.findViewById(R.id.tvPunchIn);
+        TextView tvPunchOut = convertView.findViewById(R.id.tvPunchOut);
+        TextView tvOverall = convertView.findViewById(R.id.tvOverall);
+        TextView tvRemarks = convertView.findViewById(R.id.tvRemarks);
+        TextView tvPunchStatus = convertView.findViewById(R.id.tvPunchStatus);
+
+        if (punchRecord != null) {
+            tvDay.setText(punchRecord.getDay());
+            tvPunchIn.setText("Punch In: " + punchRecord.getPunchIn());
+            tvPunchOut.setText("Punch Out: " + punchRecord.getPunchOut());
+            tvOverall.setText("Overall: " + punchRecord.getOverall());
+            tvRemarks.setText("Punch In Remarks: " + punchRecord.getRemarks());
+            tvPunchStatus.setText(punchRecord.getPunchStatus());
+        }
+
+        return convertView;
+    }
+}
+Step 4: Populate Data into Firebase
+You'll need to populate the data in Firebase Database. You can do this either manually via the Firebase Console or by adding some code to save records.
+
+Step 5: Running the Application
+Once all the steps are completed, run your application. Your AttendanceActivity will display a list similar to the one shown in the screenshot.
+
+This process will replicate the design in the screenshot and integrate it with Firebase for dynamic data display.

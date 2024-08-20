@@ -1,33 +1,17 @@
 package com.example.qrstaff;
 
+
+
+
+
 public class User {
-    private String name;
-    private String designation;
-    private String userId;
-    private String phoneNumber;
+    public String phoneNumber;
 
-
-
-    // Getters and Setters
-    public String getName() {
-        return name;
+    public User() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-
-    public String getDesignation() {
-        return designation;
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
-
-
-
-    public String getUserId() {
-        return userId;
-    }
-
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-
 }

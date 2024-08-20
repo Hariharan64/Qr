@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeActivity">
+
+
+    <GridView
+        android:id="@+id/gridViewCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="320dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="7"
+        android:padding="8dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp" />
+
+    <TextView
+        android:id="@+id/shiftTimings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shift Timings: 09:00 AM - 07:00 PM"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/gridViewCalendar"/>
+
+    <!-- Calendar View -->
+
+
+    <!-- Scan QR Code Button -->
+
+
+    <!-- Punch In Button -->
+
+</RelativeLayout>

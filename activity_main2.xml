@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".MainActivity2">
+
+
+
+    <com.hbb20.CountryCodePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ccp_showFlag="false"
+        android:id="@+id/login_countrycode"
+        />
+    <EditText
+        android:id="@+id/login_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="80dp"
+        android:elevation="1dp"
+        android:hint="Mobile"
+        android:inputType="phone"
+        android:padding="10dp"
+
+
+        />
+
+    <Button android:id="@+id/btn_generate_otp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_mobile_number"
+        android:layout_margin="20dp"
+        android:background="#800000"
+        android:textColor="#ffffff"
+        android:text="Generate OTP"
+        android:textSize="20sp"/>
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer"
+        android:textSize="30sp"
+        android:layout_below="@id/btn_generate_otp"
+        android:visibility="invisible"/>
+
+    <Button android:id="@+id/btn_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timer"
+        android:layout_margin="20dp"
+        android:background="#800000"
+        android:text="Verify and SignIn"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        android:visibility="invisible"/>
+
+
+</RelativeLayout>

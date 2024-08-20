@@ -1,42 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_scan"
+        android:id="@+id/scanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scan Barcode/QR Code"
+        android:text="Scan QR Code"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_marginTop="50dp"/>
 
-    <TextView
-        android:id="@+id/tv_result"
+    <Button
+        android:id="@+id/punchInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_scan"
+        android:text="Punch In"
+        android:layout_below="@id/scanButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
-        android:textColor="#000" />
+        android:layout_marginTop="20dp"/>
 
+    <Button
+        android:id="@+id/punchOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Punch Out"
+        android:layout_below="@id/punchInButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/textViewUserInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="User Info will appear here"
-            android:padding="16dp" />
-    </LinearLayout>
-
-
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Attendance"
+        android:layout_below="@id/punchOutButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>

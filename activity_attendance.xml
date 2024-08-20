@@ -3,19 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <CalendarView
-        android:id="@+id/calendarView"
+
+    <GridView
+        android:id="@+id/gridViewCalendar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_height="320dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="7"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Data Will Appear Here"
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
 
     <Button
-        android:id="@+id/buttonRecordDate"
+            android:id="@+id/punchInButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Punch In"/>
+
+        <Button
+            android:id="@+id/punchOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/punchInButton"
+            android:layout_toRightOf="@+id/punchInButton"
+            android:text="Punch Out"/>
+
+    <TextView
+        android:id="@+id/shiftTimings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record Date"
-        android:layout_below="@id/calendarView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:text="Shift Timings: 09:00 AM - 07:00 PM"
+        android:layout_marginTop="500dp"
+        />
+
+
+
+
+
+    <Button
+        android:contentDescription="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn"
+        android:layout_marginTop="700dp"
+        />
+
 </RelativeLayout>

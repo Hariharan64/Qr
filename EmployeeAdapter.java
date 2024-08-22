@@ -14,18 +14,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
 
     private List<Employee> employeeList;
 
-    public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
-        public TextView employeeName, employeeNumber, employeeId, phoneNumber;
-
-        public EmployeeViewHolder(View itemView) {
-            super(itemView);
-            employeeName = itemView.findViewById(R.id.textViewEmployeeName);
-            employeeNumber = itemView.findViewById(R.id.textViewEmployeeNumber);
-            employeeId = itemView.findViewById(R.id.textViewEmployeeId);
-            phoneNumber = itemView.findViewById(R.id.textViewPhoneNumber);
-        }
-    }
-
     public EmployeeAdapter(List<Employee> employeeList) {
         this.employeeList = employeeList;
     }
@@ -33,22 +21,33 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @NonNull
     @Override
     public EmployeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.employee_item, parent, false);
-        return new EmployeeViewHolder(itemView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_employee, parent, false);
+        return new EmployeeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         Employee employee = employeeList.get(position);
-        holder.employeeName.setText(employee.getEmployeeName());
-        holder.employeeNumber.setText(employee.getEmployeeNumber());
-        holder.employeeId.setText(employee.getEmployeeId());
-        holder.phoneNumber.setText(employee.getPhoneNumber());
+        holder.nameTextView.setText(employee.getName());
+        holder.designationTextView.setText(employee.getDesignation());
+        holder.phoneTextView.setText(employee.getPhone());
     }
 
     @Override
     public int getItemCount() {
         return employeeList.size();
+    }
+
+    public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameTextView;
+        public TextView designationTextView;
+        public TextView phoneTextView;
+
+        public EmployeeViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.tv_employee_name);
+            designationTextView = itemView.findViewById(R.id.tv_employee_designation);
+            phoneTextView = itemView.findViewById(R.id.tv_employee_phone);
+        }
     }
 }

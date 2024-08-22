@@ -1,51 +1,53 @@
 package com.example.qrstaff;
 
-public class Employee {
-    private String employeeName;
-    private String employeeNumber;
-    private String employeeId;
-    private String phoneNumber;
 
-    // Default constructor required for calls to DataSnapshot.getValue(Employee.class)
+public class Employee {
+    private String name;
+    private String number;
+    private String designation;
+    private String phone;
+
+    // No-argument constructor required for Firestore
     public Employee() {
     }
 
-    public Employee(String employeeName, String employeeNumber, String employeeId, String phoneNumber) {
-        this.employeeName = employeeName;
-        this.employeeNumber = employeeNumber;
-        this.employeeId = employeeId;
-        this.phoneNumber = phoneNumber;
+    public Employee(String name, String number, String designation, String phone) {
+        this.name = name;
+        this.number = number;
+        this.designation = designation;
+        this.phone = phone;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    // Getter and Setter methods for each field
+    public String getName() {
+        return name;
     }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEmployeeNumber() {
-        return employeeNumber;
+    public String getNumber() {
+        return number;
     }
 
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public String getEmployeeId() {
-        return employeeId;
+    public String getDesignation() {
+        return designation;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

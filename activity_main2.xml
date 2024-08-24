@@ -1,61 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- activity_add_user.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    tools:context=".MainActivity2">
+    <EditText
+        android:id="@+id/editTextPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Enter Phone Number"
+        android:inputType="phone"/>
 
-
-
-    <com.hbb20.CountryCodePicker
+    <Button
+        android:id="@+id/buttonVerifyPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:ccp_showFlag="false"
-        android:id="@+id/login_countrycode"
-        />
+        android:text="Verify Phone Number"
+        android:layout_gravity="center"/>
+
     <EditText
-        android:id="@+id/login_mobile_number"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="80dp"
-        android:elevation="1dp"
-        android:hint="Mobile"
-        android:inputType="phone"
-        android:padding="10dp"
-
-
-        />
-
-    <Button android:id="@+id/btn_generate_otp"
+        android:id="@+id/editTextOTP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_mobile_number"
-        android:layout_margin="20dp"
-        android:background="#800000"
-        android:textColor="#ffffff"
-        android:text="Generate OTP"
-        android:textSize="20sp"/>
+        android:hint="Enter OTP"
+        android:inputType="number"
+        android:visibility="gone"/>
 
-    <TextView android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/buttonSubmitData"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/timer"
-        android:textSize="30sp"
-        android:layout_below="@id/btn_generate_otp"
-        android:visibility="invisible"/>
-
-    <Button android:id="@+id/btn_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/timer"
-        android:layout_margin="20dp"
-        android:background="#800000"
-        android:text="Verify and SignIn"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        android:visibility="invisible"/>
-
-
-</RelativeLayout>
+        android:text="Submit Data"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+</LinearLayout>

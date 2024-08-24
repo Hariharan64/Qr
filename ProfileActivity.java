@@ -1,8 +1,5 @@
 package com.example.qrstaff;
 
-
-// MainActivity.java
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -84,9 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private String getFileExtension(Uri uri) {
-        String extension;
-        // Using content resolver to get the extension
-        extension = getContentResolver().getType(uri).split("/")[1];
+        String extension = getContentResolver().getType(uri).split("/")[1];
         return extension;
     }
 }

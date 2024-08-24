@@ -17,40 +17,114 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="8dp" />
 
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_marginTop="20dp"
+        android:layout_width="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_height="100dp"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/tv_employee_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Employee Details"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <!-- activity_user.xml -->
+
 
         <TextView
-            android:id="@+id/textViewUsers"
-            android:layout_width="match_parent"
+            android:id="@+id/textViewUserData"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="50dp"
             android:layout_height="wrap_content"
-            android:text="User Data Will Appear Here"
-            android:textSize="18sp"
-            android:textColor="@android:color/black" />
+            android:text="User Data"/>
 
-    </LinearLayout>
+
+
+
+    <Button
+            android:contentDescription="heloo"
+            android:id="@+id/btn"
+            android:layout_marginTop="140dp"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            />
+
+        <TextView
+            android:id="@+id/presentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Present: 0"
+            android:layout_marginTop="180dp"
+            android:textColor="@color/colorOnPrimary"
+            android:layout_marginStart="15dp"
+            android:textSize="16sp" />
+
+    <Button
+        android:contentDescription="heaa"
+        android:id="@+id/absent"
+        android:layout_marginTop="140dp"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="130dp"
+        />
+
+
+    <TextView
+            android:id="@+id/absentCount"
+        android:layout_marginTop="180dp"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorOnPrimary"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="145dp"
+            android:text="Absent: 0"
+            android:textSize="16sp" />
+
+    <Button
+        android:contentDescription="hbe"
+        android:id="@+id/leave"
+        android:layout_marginTop="140dp"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="260dp"
+        />
+
+    <TextView
+        android:id="@+id/leavecount"
+        android:layout_marginTop="180dp"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorOnPrimary"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="279dp"
+        android:text="Leave: 0"
+        android:textSize="16sp" />
+
+
+
 
 
     <Button
             android:id="@+id/punchInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="300dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_marginStart="140dp"
             android:text="Punch In"/>
 
         <Button
             android:id="@+id/punchOutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/punchInButton"
-            android:layout_toRightOf="@+id/punchInButton"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="390dp"
             android:text="Punch Out"/>
 
     <TextView
@@ -65,12 +139,6 @@
 
 
 
-    <Button
-        android:contentDescription="@string/app_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn"
-        android:layout_marginTop="700dp"
-        />
+
 
 </RelativeLayout>

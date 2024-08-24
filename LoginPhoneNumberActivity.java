@@ -1,6 +1,5 @@
 package com.example.qrstaff;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +16,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
@@ -29,6 +33,7 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference adminPhoneNumberRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_phone_number);
 
         mAuth = FirebaseAuth.getInstance();
+        adminPhoneNumberRef = FirebaseDatabase.getInstance().getReference("AdminPhoneNumbers");
 
         countryCodePicker = findViewById(R.id.login_countrycode);
         phoneInput = findViewById(R.id.editTextEmployeeName);
@@ -55,7 +61,29 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
             sendOtpBtn.setVisibility(View.INVISIBLE);
 
             String phoneNumber = countryCodePicker.getFullNumberWithPlus();
-            sendVerificationCode(phoneNumber);
+            checkIfPhoneNumberIsAdmin(phoneNumber);
+        });
+    }
+
+    private void checkIfPhoneNumberIsAdmin(String phoneNumber) {
+        adminPhoneNumberRef.child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    sendVerificationCode(phoneNumber);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    sendOtpBtn.setVisibility(View.VISIBLE);
+                    phoneInput.setError("Phone number not recognized");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressBar.setVisibility(View.GONE);
+                sendOtpBtn.setVisibility(View.VISIBLE);
+                Toast.makeText(LoginPhoneNumberActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -68,7 +96,6 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                                // Automatically verify and sign in
                                 signInWithPhoneAuthCredential(credential);
                             }
 
@@ -84,7 +111,6 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 sendOtpBtn.setVisibility(View.VISIBLE);
 
-                                // Move to OTP verification screen
                                 Intent intent = new Intent(LoginPhoneNumberActivity.this, LoginOtpActivity.class);
                                 intent.putExtra("phone", phoneNumber);
                                 intent.putExtra("verificationId", verificationId);
@@ -99,7 +125,6 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign-in succeeded, proceed to the main activity
                         Intent intent = new Intent(LoginPhoneNumberActivity.this, AttendanceActivity.class);
                         startActivity(intent);
                         finish();
